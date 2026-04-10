@@ -14,23 +14,23 @@ jobs:
       - name: Setup Theos
         run: |
           git clone --recursive https://github.com/theos/theos.git ~/theos
+          # ldid o'rnatish (imzolash xatosini tuzatadi)
+          curl -L https://github.com/theos/ldid/releases/latest/download/ldid_macos_x86_64 -o ~/theos/bin/ldid
+          chmod +x ~/theos/bin/ldid
           echo "THEOS=~/theos" >> $GITHUB_ENV
           echo "~/theos/bin" >> $GITHUB_PATH
 
       - name: Setup SDK
         run: |
-          # SDKni zip formatida yuklab olamiz (bu ishonchliroq)
           curl -L https://github.com/theos/sdks/archive/master.zip -o sdks.zip
           unzip -q sdks.zip
           mkdir -p ~/theos/sdks
-          # Faqat bitta kerakli SDKni ko'chirib o'tamiz
           mv sdks-master/iPhoneOS16.5.sdk ~/theos/sdks/
           rm -rf sdks-master sdks.zip
 
       - name: Build Dylib
         run: |
           export THEOS=~/theos
-          # Makefile va Tweak.x asosida dylib yig'ish
           make package FINALPACKAGE=1
           
       - name: Upload Artifact
