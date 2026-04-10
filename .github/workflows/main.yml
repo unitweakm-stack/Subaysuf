@@ -14,9 +14,8 @@ jobs:
       - name: Setup Theos
         run: |
           git clone --recursive https://github.com/theos/theos.git ~/theos
-          # ldid o'rnatish (imzolash xatosini tuzatadi)
-          curl -L https://github.com/theos/ldid/releases/latest/download/ldid_macos_x86_64 -o ~/theos/bin/ldid
-          chmod +x ~/theos/bin/ldid
+          # ldid-ni GitHub-dan emas, brew orqali o'rnatamiz (eng ishonchli yo'li)
+          brew install ldid
           echo "THEOS=~/theos" >> $GITHUB_ENV
           echo "~/theos/bin" >> $GITHUB_PATH
 
@@ -31,6 +30,7 @@ jobs:
       - name: Build Dylib
         run: |
           export THEOS=~/theos
+          # ldid yo'lini ko'rsatib o'tamiz
           make package FINALPACKAGE=1
           
       - name: Upload Artifact
