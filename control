@@ -1,8 +1,8 @@
-Package: com.yourname.subwaymod
+Package: com.user.subwaymod
 Name: SubwayMod
 Depends: mobilesubstrate
 Version: 1.0.0
 Architecture: iphoneos-arm64
 Description: Subway Surfers Unlimited Coins
-Author: YourName
+Author: Gemini
 Section: Tweaks
