@@ -14,7 +14,6 @@ jobs:
       - name: Setup Theos
         run: |
           git clone --recursive https://github.com/theos/theos.git ~/theos
-          # ldid-ni GitHub-dan emas, brew orqali o'rnatamiz (eng ishonchli yo'li)
           brew install ldid
           echo "THEOS=~/theos" >> $GITHUB_ENV
           echo "~/theos/bin" >> $GITHUB_PATH
@@ -30,11 +29,10 @@ jobs:
       - name: Build Dylib
         run: |
           export THEOS=~/theos
-          # ldid yo'lini ko'rsatib o'tamiz
-          make package FINALPACKAGE=1
+          make FINALPACKAGE=1
           
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: SubwayMod-Dylib
-          path: .theos/obj/debug/*.dylib
+          path: .theos/obj/SubwayMod.dylib
