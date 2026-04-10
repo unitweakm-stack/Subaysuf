@@ -1,0 +1,39 @@
+name: iOS Tweak Build V4
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: # Bu tugma orqali o'zingiz ham buildni boshlata olasiz
+
+jobs:
+  build:
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4 # V4 versiya ishlatamiz
+
+      - name: Setup Theos
+        run: |
+          export THEOS=~/theos
+          # Theos va uning resurslarini eng so'nggi v4 skripti orqali o'rnatish
+          bash -c "$(curl -fsSL https://raw.githubusercontent.com/theos/theos/master/bin/install-theos)"
+          # SDK-larni sozlash (iOS 15-16 SDK modding uchun eng barqarori)
+          curl -LO https://github.com/theos/sdks/raw/master/iPhoneOS16.5.sdk.tar.xz
+          mkdir -p $THEOS/sdks
+          tar -xf iPhoneOS16.5.sdk.tar.xz -C $THEOS/sdks
+          echo "THEOS=~/theos" >> $GITHUB_ENV
+
+      - name: Build Dylib
+        run: |
+          # FINALPACKAGE=1 - bu modni eng kichik va tezkor hajmda yig'adi
+          make package FINALPACKAGE=1
+          
+      - name: Upload Dylib Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SubwayMod-V4-Dylib
+          path: .theos/obj/debug/*.dylib
